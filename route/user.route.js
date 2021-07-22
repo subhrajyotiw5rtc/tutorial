@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controller/user.controller');
+const logincontroller = require('../controller/auth.controller');
 
 
 
@@ -11,8 +12,9 @@ class Userrouter {
     getRouter() {
         try{
             router.get('/', controller.checkApi.bind(controller));
+            router.post('/login', logincontroller.login.bind(logincontroller));
             router.get('/getRecord', controller.getRecord.bind(controller));
-            router.post('/addRecord', controller.addRecord.bind(controller));
+            router.post('/addRecord', logincontroller.verify, controller.addRecord.bind(controller));
             router.put('/updateRecord/:id', controller.updateRecord.bind(controller));
             router.post('/searchRecord', controller.searchRecord.bind(controller));
             router.post('/pagiRecord', controller.pagiRecord.bind(controller));
