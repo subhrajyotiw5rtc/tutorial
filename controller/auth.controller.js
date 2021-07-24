@@ -57,6 +57,7 @@ class Auth {
                                     "msg": "Token could not generated.",
                                     "body": {}
                                 }
+                                res.cookies('jwt', token, {httpOnly: true});
                                 res.status(500).send(responseObj);
                             }
                         }else{
