@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 
+const dbname = process.env.DB_NAME;
+
+console.log('db==', dbname);
+
+const constr = `mongodb://localhost:27017/${dbname}`;
 
 
-
-mongoose.connect('mongodb://localhost:27017/tutorial', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(constr, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 const db = mongoose.connection;

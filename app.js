@@ -5,6 +5,8 @@ const xss = require('xss-clean');
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
+require('dotenv').config();
+
 
 const apiLimiter = expressRate({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -13,7 +15,11 @@ const apiLimiter = expressRate({
 const user = require('./route/user.route');
 const db = require('./db.js');
 const app = express();
-const port = 8000;
+const port = process.env.PORT;
+const origin = process.env.ORIGIN;
+
+console.log('port is ===', port);
+console.log('origin is ===', origin);
 
 app.use(bodyParser.json({limit: '25mb'}));
 app.use(bodyParser.urlencoded({limit: '25mb', extended: true}));
@@ -23,9 +29,9 @@ app.use(helmet());
 app.use(mongoSanitize());
 
 var corsOptions = {
-    origin: ['http://localhost:4200','http://localhost:3000'],
+    origin: origin,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204,
-    methods: "GET, POST"
+    methods: "GET, POST, PUT, DELETE"
 }
 
 app.use(cors(corsOptions));
