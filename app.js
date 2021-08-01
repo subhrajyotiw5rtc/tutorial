@@ -5,6 +5,8 @@ const xss = require('xss-clean');
 const helmet = require("helmet");
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 require('dotenv').config();
 
 
@@ -21,15 +23,21 @@ const origin = process.env.ORIGIN;
 console.log('port is ===', port);
 console.log('origin is ===', origin);
 
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://apis.google.com", "http://localhost:8000");
+    return next();
+});
+
 app.use(bodyParser.json({limit: '25mb'}));
 app.use(bodyParser.urlencoded({limit: '25mb', extended: true}));
 app.use(express.json({limit: '10kb'}));//body limit
 app.use(xss());
-app.use(helmet());
+//app.use(helmet());
 app.use(mongoSanitize());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
 
 var corsOptions = {
-    origin: 'http://localhost:3002',
+    origin: 'http://localhost:8000',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204,
     methods: "GET, POST, PUT, DELETE"
 }
