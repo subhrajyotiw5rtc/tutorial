@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const fileUpload = require('express-fileupload');
 require('dotenv').config();
 
 
@@ -35,6 +36,12 @@ app.use(xss());
 //app.use(helmet());
 app.use(mongoSanitize());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
+
+app.use(fileUpload({
+    createParentPath: true,
+    parseNested: true
+}));
+process.env.root_dir = __dirname;
 
 var corsOptions = {
     origin: 'http://localhost:8000',

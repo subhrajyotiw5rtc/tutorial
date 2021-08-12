@@ -1,5 +1,6 @@
 const path = require('path');
 const UserModel = require('../model/user.model');
+const moment = require('moment');
 
 let responseObj = {
     "status": "",
@@ -109,6 +110,34 @@ class Usercontroller {
                     }
                     
                 })
+            }
+        }catch(error) {
+            console.log('Error', error);
+        }
+    }
+
+    upload = (req, res, next) => {
+        try{
+            if(!req.files) {
+                responseObj = {
+                    "status": "error",
+                    "msg": "No input found.",
+                    "body": {}
+                }
+                res.status(500).send(responseObj);
+            }else{
+                const rawFile = req.files.file;
+                console.log('file', rawFile);
+                const timestamp = moment().format('YYYY-MM-DD HH:MM:ss');
+                const newFileName = `${timestamp}_${rawFile.name}`;
+                console.log('newfile', newFileName);
+                rawFile.mv(`${process.env.root_dir}/uploads/${newFileName}`);
+                responseObj = {
+                    "status": "success",
+                    "msg": "Successfully uploaded the file",
+                    "body": {}
+                }
+                res.status(200).send(responseObj);
             }
         }catch(error) {
             console.log('Error', error);

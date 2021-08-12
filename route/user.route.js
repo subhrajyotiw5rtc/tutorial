@@ -15,6 +15,7 @@ class Userrouter {
             router.post('/login', logincontroller.login.bind(logincontroller));
             router.get('/getRecord', logincontroller.verify, controller.getRecord.bind(controller));
             router.post('/addRecord', logincontroller.verify, controller.addRecord.bind(controller));
+            router.post('/upload', logincontroller.verify, controller.upload.bind(controller));
             router.put('/updateRecord/:id', logincontroller.verify, controller.updateRecord.bind(controller));
             router.post('/searchRecord', logincontroller.verify, controller.searchRecord.bind(controller));
             router.post('/pagiRecord', logincontroller.verify, controller.pagiRecord.bind(controller));
